@@ -1,0 +1,36 @@
+.mainButton {
+    margin-top: 20px;
+    width: 100%;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 0 0 4px;
+    padding: 0 16px;
+    color: var(--white-color);
+    background-color: rgb(28, 176, 246);
+    text-transform: uppercase;
+    box-shadow: 0 2px 0 rgb(20, 132, 184);
+}
+
+
+.secondaryButton {
+    background-color: var(--white-color);
+    color: rgb(28, 176, 246);
+    border: 2px solid var(--border-input);
+    border-radius: 16px;
+    text-transform: uppercase;
+    bottom: -2px;
+    box-shadow: 0 2px 0 var(--border-input);
+}
+
+
+/* SIZES */
+.buttonSm {}
+
+.buttonMd {}
+
+.buttonLg {
+    height: 50px;
+    font-weight: 600;
+    border-radius: 16px;
+    letter-spacing: 1px;
+}
