@@ -3,7 +3,9 @@ import MainInput from "../../../components/input/MainInput";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/button/buttons";
 import styles from "./login.module.scss";
-// import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../../redux/store";
+import { BASE_API_URL } from '../../../../config/env'
+import { signInUser } from "../../../../redux/actions/session.action";
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -11,7 +13,7 @@ const Login = () => {
         password: "laura"
     });
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleLogin = async () => {
         if (!values.email || !values.password) {
@@ -20,17 +22,12 @@ const Login = () => {
         };
 
         try {
-            const url = 'http://localhost:5179/users/login';
-            const respStream = await fetch(url, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(values)
-            });
-            const resp = await respStream.json();
+            dispatch(signInUser(values));
+
             if (resp) {
                 localStorage.setItem('tkn', resp.data);
                 alert('Admin logado exitosamente');
-                // dispatch({ type: 'STORE_USER_INFO', payload: { ...resp.user, active: true } });
+                dispatch({ type: 'STORE_USER_INFO', payload: { ...resp.user, active: true } });
                 navigate('/');
             } else {
                 alert("incorrecto")
@@ -49,14 +46,23 @@ const Login = () => {
         )
     };
 
+    const handleRedirect = () => {
+        navigate('/register')
+    }
+
     return (
         <div className={styles.container}>
-            <h2 className={styles.titleRegister}>Ingresar</h2>
-            <div>
-                <MainInput placeholder="Correo o usuario" value={values.email} onChange={handleInputChange} />
-                <MainInput placeholder="Contraseña" value={values.password} onChange={handleInputChange} />
+            <div className={styles.subContainer}>
+                <Button isMain={false} size="md" onClick={handleRedirect}>Regístrate</Button>
+                <div>
+                    <h2 className={styles.titleRegister}>Ingresar</h2>
+                    <div>
+                        <MainInput placeholder="Correo o usuario" value={values.email} onChange={handleInputChange} />
+                        <MainInput placeholder="Contraseña" value={values.password} onChange={handleInputChange} />
+                    </div>
+                    <Button isMain={true} size="lg" onClick={handleLogin}>Ingresar</Button>
+                </div>
             </div>
-            <Button isMain={true} size="lg" onClick={handleLogin}>Ingresar</Button>
         </div>
     )
 }

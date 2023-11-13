@@ -26,7 +26,14 @@
 /* SIZES */
 .buttonSm {}
 
-.buttonMd {}
+.buttonMd {
+    border-width: 2px 2px 4px;
+    border-radius: 16px 12px;
+    height: 55px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    width: 50%;
+}
 
 .buttonLg {
     height: 50px;
