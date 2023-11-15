@@ -1,16 +1,31 @@
-.container {
+.mainContainer {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+}
+
+.containerButtonLogin {
+    display: flex;
+    padding: 0 40px;
+    text-align: -webkit-right !important;
+}
+
+.containerForm {
+    display: flex;
     justify-content: center;
 }
 
-.subContainer {
-    text-align: center;
+.buttonLogin {
     display: flex;
-    flex-direction: column;
-    width: 25%;
+    width: min-content !important;
 }
 
-.titleRegister {
+.subContainerForm {
+    flex-direction: column;
+    display: flex;
+    min-width: 25%;
+    align-items: center;
+}
+
+.titleLogin {
     font-family: din-round, sans-serif;
 }

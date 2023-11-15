@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Router, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/home/home";
 import Register from "./pages/auth/register/register";
 import Login from "./pages/auth/login/login";
@@ -27,15 +27,15 @@ const AppRouter = () => {
     }
   }, [isAuthenticated, dispatch]);
 
-  if (isAuthenticating) {
-    return <div>Loading...</div>;
-  }
+  // if (isAuthenticating) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <Routes>
       {isAuthenticated ? (
+
         <Route path="/" element={<Layout onLogout={handleLogout} />}>
-          <Route path="/home" element={<Home />}></Route>
           <Route path="/" element={<Home />}></Route>
 
           <Route path="*" element={<Navigate to="/" />} />

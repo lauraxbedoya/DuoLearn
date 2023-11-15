@@ -1,3 +1,5 @@
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+
 export const theme = {
     colors: {
         main: "rgb( 88,204,2 )",

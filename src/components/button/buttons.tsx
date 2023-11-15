@@ -1,10 +1,10 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import styles from "./buttons.module.scss";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick: () => any;
   children: string;
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+  size?: "sm" | "md" | "lg";
   color?: "primary" | "secondary";
   isMain: boolean | null;
   disabled?: boolean;
@@ -40,18 +40,19 @@ const Button = ({
   useEffect(setStyles, [size]);
 
   return (
-    <button
-      {...props}
-      disabled={disabled}
-      className={`
+    <div className={styles.containerButton}>
+      <button
+        {...props}
+        disabled={disabled}
+        className={`
                 ${styles.mainButton}
-                p-button-rounded
                 ${customClass}
-                ${!isMain ? styles.secondaryButton : ""}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+                ${!isMain ? styles.secondaryButton : ""} ${props.className}`}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    </div>
   );
 };
 

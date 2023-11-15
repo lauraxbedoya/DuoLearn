@@ -6,11 +6,13 @@
 .input {
     color: var(--text-input-main-color);
     background: var(--ternary-color);
-    font-size: 17px;
+    font-size: 15px;
     line-height: 25px;
     padding: 9.5px 16px;
     width: 100%;
     padding: 9.5px 16px;
     border: 2px solid var(--border-input);
     border-radius: 12px;
+    letter-spacing: 0.7px;
+    overflow: hidden;
 }

@@ -1,3 +1,7 @@
+.containerButton {
+    width: 100%;
+}
+
 .mainButton {
     margin-top: 20px;
     width: 100%;
@@ -9,16 +13,22 @@
     background-color: rgb(28, 176, 246);
     text-transform: uppercase;
     box-shadow: 0 2px 0 rgb(20, 132, 184);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
 
 .secondaryButton {
     background-color: var(--white-color);
+    width: 100%;
     color: rgb(28, 176, 246);
     border: 2px solid var(--border-input);
-    border-radius: 16px;
     text-transform: uppercase;
     bottom: -2px;
+    border-style: solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 2px 0 var(--border-input);
 }
 
@@ -32,7 +42,7 @@
     height: 55px;
     font-weight: 600;
     letter-spacing: 1px;
-    width: 50%;
+    padding: 0px 28px;
 }
 
 .buttonLg {
