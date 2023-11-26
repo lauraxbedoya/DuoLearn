@@ -5,7 +5,7 @@ import Button from "../../../components/button/buttons";
 import styles from "./login.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { signInUser } from "../../../../redux/actions/session.action";
-import { UserLogin } from "../../../utils/user/userInterface";
+import { UserLogin } from "../../../utils/interfaces/user/user";
 
 const Login = () => {
     const [values, setValues] = useState<UserLogin>({

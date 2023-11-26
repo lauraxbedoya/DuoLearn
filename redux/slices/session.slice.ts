@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../src/utils/user/userInterface";
+import { User } from "../../src/utils/interfaces/user/user";
 import {
   findLoggedUser,
   registerUser,

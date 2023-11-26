@@ -1,11 +1,11 @@
-import { RoleEnum } from "../enums/user.enum";
+import { RoleEnum } from "../../enums/user.enum";
 
 export interface User {
     name?: string;
     email: string;
     password: string;
     age?: number;
-    dateOfBirth?: Date
+    dateOfBirth?: Date;
     ProfileImage?: string;
     role?: RoleEnum;
     active: boolean;

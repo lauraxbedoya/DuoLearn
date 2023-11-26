@@ -34,7 +34,14 @@
 
 
 /* SIZES */
-.buttonSm {}
+.buttonSm {
+    border-width: 1px 1px 3px;
+    border-radius: 16px 12px;
+    height: 40px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 15px 10px;
+}
 
 .buttonMd {
     border-width: 2px 2px 4px;

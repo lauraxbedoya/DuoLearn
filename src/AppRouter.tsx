@@ -1,4 +1,4 @@
-import { Navigate, Route, Router, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/home/home";
 import Register from "./pages/auth/register/register";
 import Login from "./pages/auth/login/login";
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 import { findLoggedUser } from "../redux/actions/session.action";
 import { clearSession } from "../redux/slices/session.slice";
 import Layout from "./components/Layout/Layout";
+import Languages from "./pages/admin/languagesAdmin/LanguagesAdmin";
 
 const AppRouter = () => {
   const { isAuthenticating, isAuthenticated } = useAppSelector(
@@ -37,6 +38,8 @@ const AppRouter = () => {
 
         <Route path="/" element={<Layout onLogout={handleLogout} />}>
           <Route path="/" element={<Home />}></Route>
+
+          <Route path="/languages" element={<Languages />}></Route>
 
           <Route path="*" element={<Navigate to="/" />} />
         </Route>

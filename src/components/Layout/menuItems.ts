@@ -2,8 +2,19 @@ import { MenuItem } from 'primereact/menuitem';
 
 function getMenuItems(
     onLogout: (route: () => void) => void,
+    onRoute: (route: string) => void,
 ): MenuItem[] {
     return [
+        {
+            label: 'Admin', icon: 'pi pi-fw pi-plus',
+            items: [
+                {
+                    label: "Languages", command: () => {
+                        onRoute('/languages')
+                    }
+                }
+            ]
+        },
         { label: 'Aprender', icon: 'pi pi-fw pi-plus' },
         { label: 'Practicar', icon: 'pi pi-fw pi-plus' },
         { label: 'Ligas', icon: 'pi pi-fw pi-plus' },
