@@ -3,14 +3,18 @@ import Home from "./pages/home/home";
 import Register from "./pages/auth/register/register";
 import Login from "./pages/auth/login/login";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { findLoggedUser } from "../redux/actions/session.action";
-import { clearSession } from "../redux/slices/session.slice";
+import { useAppDispatch, useAppSelector } from "@src/redux/store";
+import { findLoggedUser } from "@src/redux/actions/session.action";
+import {
+  clearSession,
+  setSessionStoreKey,
+} from "@src/redux/slices/session.slice";
 import Layout from "./components/Layout/Layout";
 import Languages from "./pages/admin/languagesAdmin/LanguagesAdmin";
+import Button from "./components/button/buttons";
 
 const AppRouter = () => {
-  const { isAuthenticating, isAuthenticated } = useAppSelector(
+  const { isAuthenticating, isAuthenticated, error } = useAppSelector(
     (state) => state.session
   );
   const dispatch = useAppDispatch();
@@ -26,16 +30,28 @@ const AppRouter = () => {
     if (!isAuthenticated && token) {
       dispatch(findLoggedUser());
     }
+
+    if (!token) {
+      dispatch(setSessionStoreKey({ key: "isAuthenticating", value: false }));
+    }
   }, [isAuthenticated, dispatch]);
 
-  // if (isAuthenticating) {
-  //   return <div>Loading...</div>;
-  // }
+  if (error) {
+    return (
+      <div>
+        {error}
+        <Button onClick={() => handleLogout()}>Logout</Button>
+      </div>
+    );
+  }
+
+  if (isAuthenticating) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Routes>
       {isAuthenticated ? (
-
         <Route path="/" element={<Layout onLogout={handleLogout} />}>
           <Route path="/" element={<Home />}></Route>
 

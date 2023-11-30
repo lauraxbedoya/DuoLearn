@@ -2,7 +2,7 @@ import styles from "./duoInput.module.scss";
 
 type MainInputProps = {
     placeholder: string,
-    onChange?: (e: any) => any,
+    onChange: (key: string, value: string) => any,
     value?: any,
     name: string,
     type?: string,
@@ -26,7 +26,7 @@ export default function DuoInput({
                 className={styles.input}
                 placeholder={placeholder}
                 value={value}
-                onChange={onChange}
+                onChange={(e) => onChange(e.target.name, e.target.value)}
                 name={name}
                 type={type}
             />

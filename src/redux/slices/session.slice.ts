@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../src/utils/interfaces/user/user";
+import { User } from "@src/utils/interfaces/user/user";
 import {
   findLoggedUser,
   registerUser,
@@ -42,8 +42,14 @@ export const sessionSlice = createSlice({
       state.loading = initialState.loading;
       state.error = initialState.error;
       state.isAuthenticated = initialState.isAuthenticated;
+      state.isAuthenticating = false;
       localStorage.removeItem("tkn");
     },
+    setSessionStoreKey: (state, { payload: { key, value} }: PayloadAction<any>) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore-next-line
+      state[key] = value;
+    }
   },
   extraReducers(builder) {
     // login
@@ -77,5 +83,5 @@ export const sessionSlice = createSlice({
   },
 });
 
-export const { clearSession } = sessionSlice.actions;
+export const { clearSession, setSessionStoreKey } = sessionSlice.actions;
 export default sessionSlice.reducer;

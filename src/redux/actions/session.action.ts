@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { User } from "../../src/utils/interfaces/user/user";
-import { getApiHeader, handleApiError } from "../../helpers/api.helper";
+import { User } from "@src/utils/interfaces/user/user";
+import { getApiHeader, handleApiError } from "@src/helpers/api.helper";
 import { User as FirebaseUser } from "firebase/auth";
-import { BASE_API_URL } from "../../config/env";
+import { BASE_API_URL } from "@src/config/env";
 
 const baseUrl = `${BASE_API_URL}/users/`;
 
