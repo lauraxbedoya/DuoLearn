@@ -6,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
   size?: "sm" | "md" | "lg";
   color?: "primary" | "secondary";
-  isMain: boolean | null;
+  isMain?: boolean | null;
   disabled?: boolean;
 }
 
@@ -14,7 +14,7 @@ const Button = ({
   children,
   onClick,
   size = "md",
-  isMain = true,
+  isMain = true,  
   disabled = false,
   ...props
 }: PropsWithChildren<ButtonProps>) => {

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import MainInput from "../../../components/input/MainInput";
+import DuoInput from "../../../components/input/DuoInput";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/button/buttons";
 import styles from "./login.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { signInUser } from "../../../../redux/actions/session.action";
 import { UserLogin } from "../../../utils/interfaces/user/user";
+import { setToast } from "../../../../redux/slices/common.slice";
 
 const Login = () => {
     const [values, setValues] = useState<UserLogin>({
@@ -16,11 +17,22 @@ const Login = () => {
     const dispatch = useAppDispatch();
     const { error, loading } = useAppSelector((state) => state.session);
 
-    const handleLogin = async () => {
+    const validateForm = () => {
         if (!values.email || !values.password) {
-            alert("Todos los campos son requeridos");
-            return;
+            dispatch(
+                setToast({
+                    severity: "error",
+                    summary: "Error",
+                    detail: "Campos 'email' y 'password' son requeridos",
+                })
+            );
+            return false;
         }
+        return true;
+    };
+
+    const handleLogin = async () => {
+        validateForm();
 
         try {
             dispatch(signInUser(values));
@@ -57,13 +69,13 @@ const Login = () => {
             <div className={styles.containerForm}>
                 <div className={styles.subContainerForm}>
                     <h2 className={styles.titleLogin}>Ingresar</h2>
-                    <MainInput
+                    <DuoInput
                         placeholder="Correo o usuario"
                         value={values.email}
                         name="email"
                         onChange={handleInputChange}
                     />
-                    <MainInput
+                    <DuoInput
                         placeholder="Contraseña"
                         name="password"
                         type="password"

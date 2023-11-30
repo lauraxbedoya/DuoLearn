@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MainInput from "../../../components/input/MainInput";
+import DuoInput from "../../../components/input/DuoInput.tsx";
 import { useNavigate } from "react-router-dom";
 import styles from "./register.module.scss";
 import Button from "../../../components/button/buttons";
@@ -98,19 +98,19 @@ const Register = () => {
                         placeholder="Fecha de Nacimiento"
                         className={styles.input}
                     />
-                    <MainInput
+                    <DuoInput
                         placeholder="Nombre (opcional)"
                         name="name"
                         value={formValues.name}
                         onChange={handleInputChange}
                     />
-                    <MainInput
+                    <DuoInput
                         placeholder="Correo"
                         name="email"
                         value={formValues.email}
                         onChange={handleInputChange}
                     />
-                    <MainInput
+                    <DuoInput
                         placeholder="Contraseña"
                         name="password"
                         type="password"
