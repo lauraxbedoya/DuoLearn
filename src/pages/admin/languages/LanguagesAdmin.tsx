@@ -3,33 +3,36 @@ import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
 import { BASE_API_URL } from "@src/config/env";
 import { getApiHeader } from "@src/helpers/api.helper";
-import Button from "../../../components/button/buttons";
 import styles from "./language.module.scss";
 import { Language } from "../../../utils/interfaces/language";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import LanguageFormDialog from "../../../components/languages/LanguageFormDialog";
+import { useNavigate } from "react-router-dom";
+import { Button } from "primereact/button";
 
-export default function Languages() {
+export default function LanguagesAdmin() {
   const [languages, setLanguages] = useState<Language[]>([]);
   const url = `${BASE_API_URL}/languages`;
   const [visible, setVisible] = useState(false);
   const [languageToEdit, setLanguageToEdit] = useState<Language>();
+  const navigate = useNavigate();
 
   const actionsTemplate = (language: Language) => {
     return (
       <div className={styles.containerButtons}>
-        <Button isMain size="sm" onClick={() => openEditLanguageForm(language)}>
-          Editar
-        </Button>
-        <Button isMain size="sm" onClick={() => openConfirmDelete(language)}>
-          Eliminar
-        </Button>
-        <Button isMain size="sm" onClick={handleAdminSections}>
-          Administrar Secciones
-        </Button>
+        <Button icon="pi pi-pencil" rounded text severity="secondary" onClick={() => openEditLanguageForm(language)}/>
+        <Button icon="pi pi-trash" rounded text severity="secondary" onClick={() => openConfirmDelete(language)}/>
       </div>
     );
   };
+
+  const languageAdminSectionsTemplate = (language: Language) => {
+    return (
+        <Button severity="secondary" text onClick={() => handleAdminSections(language)}>
+          Administrar secciones
+        </Button>
+    )
+  }
 
   const handleGetLanguages = async () => {
     const respStream = await fetch(url, {
@@ -39,6 +42,42 @@ export default function Languages() {
     const resp = await respStream.json();
     if (resp) {
       setLanguages(resp);
+    }
+  };
+
+  const openAddLanguageForm = () => {
+    setVisible(true);
+    setLanguageToEdit(undefined);
+  };
+
+  const handleAdd = async (language: Language) => {
+    const respStream = await fetch(url, {
+      method: "POST",
+      headers: getApiHeader(),
+      body: JSON.stringify(language),
+    });
+    if (respStream.status === 200) {
+      handleGetLanguages();
+    } else {
+      alert("Error creating language");
+    }
+  };
+
+  const openEditLanguageForm = (language: Language) => {
+    setVisible(true);
+    setLanguageToEdit(language);
+  };
+
+  const handleEdit = async (language: Language) => {
+    const respStream = await fetch(`${url}/${language.id}`, {
+      method: "PATCH",
+      headers: getApiHeader(),
+      body: JSON.stringify(language),
+    });
+    if (respStream.status === 200) {
+      handleGetLanguages();
+    } else {
+      alert("Error editing language");
     }
   };
 
@@ -62,33 +101,9 @@ export default function Languages() {
     }
   };
 
-  const handleAdd = async (language: Language) => {
-    const respStream = await fetch(url, {
-      method: "POST",
-      headers: getApiHeader(),
-      body: JSON.stringify(language),
-    });
-    if (respStream.status === 200) {
-      handleGetLanguages();
-    } else {
-      alert("Error creating language");
-    }
+  const handleAdminSections = async (language: Language) => {
+    navigate(`/languages/${language.id}/sections`);
   };
-
-  const handleEdit = async (language: Language) => {
-    const respStream = await fetch(`${url}/${language.id}`, {
-      method: "PATCH",
-      headers: getApiHeader(),
-      body: JSON.stringify(language),
-    });
-    if (respStream.status === 200) {
-      handleGetLanguages();
-    } else {
-      alert("Error editing language");
-    }
-  };
-
-  const handleAdminSections = async () => {};
 
   const handleSubmit = async (language?: Partial<Language>) => {
     if (language?.id) {
@@ -101,16 +116,6 @@ export default function Languages() {
 
   const handleClose = () => {
     setVisible(false);
-  };
-
-  const openAddLanguageForm = () => {
-    setVisible(true);
-    setLanguageToEdit(undefined);
-  };
-
-  const openEditLanguageForm = (language: Language) => {
-    setVisible(true);
-    setLanguageToEdit(language);
   };
 
   useEffect(() => {
@@ -126,12 +131,11 @@ export default function Languages() {
         language={languageToEdit}
       />
       <ConfirmDialog />
-      <Button isMain={false} size="sm" onClick={openAddLanguageForm}>
-        Agregar
-      </Button>
+      <Button icon="pi pi-plus" severity="success" raised label=" Agregar" onClick={openAddLanguageForm}/>
       <DataTable value={languages} tableStyle={{ minWidth: "50rem" }}>
         <Column field="name" header="Language"></Column>
         <Column field="name" header="Acción" body={actionsTemplate}></Column>
+        <Column header="Language" body={languageAdminSectionsTemplate}></Column>
       </DataTable>
     </div>
   );

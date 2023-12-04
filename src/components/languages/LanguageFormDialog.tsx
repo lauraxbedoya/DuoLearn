@@ -69,6 +69,7 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
   };
 
   return (
+    <div>
     <Dialog
       header="Header"
       visible={visible}
@@ -84,6 +85,7 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
         onChange={handleChange}
       />
     </Dialog>
+    </div>
   );
 };
 

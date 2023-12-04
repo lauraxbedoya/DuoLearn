@@ -10,8 +10,9 @@ import {
   setSessionStoreKey,
 } from "@src/redux/slices/session.slice";
 import Layout from "./components/Layout/Layout";
-import Languages from "./pages/admin/languagesAdmin/LanguagesAdmin";
+import LanguagesAdmin from "./pages/admin/languages/LanguagesAdmin";
 import Button from "./components/button/buttons";
+import SectionsAdmin from "./pages/admin/Sections/SectionsAdmin";
 
 const AppRouter = () => {
   const { isAuthenticating, isAuthenticated, error } = useAppSelector(
@@ -52,10 +53,11 @@ const AppRouter = () => {
   return (
     <Routes>
       {isAuthenticated ? (
-        <Route path="/" element={<Layout onLogout={handleLogout} />}>
+          <Route path="/" element={<Layout onLogout={handleLogout} />}>
           <Route path="/" element={<Home />}></Route>
 
-          <Route path="/languages" element={<Languages />}></Route>
+          <Route path="/languages" element={<LanguagesAdmin />}></Route>
+          <Route path={`/languages/:languageId/sections`} element={<SectionsAdmin />}></Route>
 
           <Route path="*" element={<Navigate to="/" />} />
         </Route>

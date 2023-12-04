@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { TieredMenu } from 'primereact/tieredmenu';
 import getMenuItems from "./menuItems";
 import styles from "./layout.module.scss";
+import { PanelMenu } from "primereact/panelmenu";
 
 interface LayoutProps {
   onLogout: () => void;
@@ -15,7 +16,10 @@ const Layout: FC<LayoutProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      <TieredMenu model={getMenuItems(onLogout, onRoute)} breakpoint="767px" className={styles.tieredmenu} />
+      <div className={styles.subContainerMenu}>
+      <PanelMenu model={getMenuItems(onLogout, onRoute)} className="w-full md:w-25rem" />
+      </div>
+      {/* <TieredMenu model={getMenuItems(onLogout, onRoute)} breakpoint="767px" className={styles.tieredmenu} /> */}
       <Outlet />
     </div>
   );
