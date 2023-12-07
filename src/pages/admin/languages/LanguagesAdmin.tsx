@@ -6,7 +6,7 @@ import { getApiHeader } from "@src/helpers/api.helper";
 import styles from "./language.module.scss";
 import { Language } from "../../../utils/interfaces/language";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import LanguageFormDialog from "../../../components/languages/LanguageFormDialog";
+import LanguageFormDialog from "../../../components/language/LanguageFormDialog";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 
@@ -20,19 +20,35 @@ export default function LanguagesAdmin() {
   const actionsTemplate = (language: Language) => {
     return (
       <div className={styles.containerButtons}>
-        <Button icon="pi pi-pencil" rounded text severity="secondary" onClick={() => openEditLanguageForm(language)}/>
-        <Button icon="pi pi-trash" rounded text severity="secondary" onClick={() => openConfirmDelete(language)}/>
+        <Button
+          icon="pi pi-pencil"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => openEditLanguageForm(language)}
+        />
+        <Button
+          icon="pi pi-trash"
+          rounded
+          text
+          severity="secondary"
+          onClick={() => openConfirmDelete(language)}
+        />
       </div>
     );
   };
 
   const languageAdminSectionsTemplate = (language: Language) => {
     return (
-        <Button severity="secondary" text onClick={() => handleAdminSections(language)}>
-          Administrar secciones
-        </Button>
-    )
-  }
+      <Button
+        severity="secondary"
+        text
+        onClick={() => handleAdminSections(language)}
+      >
+        Administrar secciones
+      </Button>
+    );
+  };
 
   const handleGetLanguages = async () => {
     const respStream = await fetch(url, {
@@ -131,7 +147,13 @@ export default function LanguagesAdmin() {
         language={languageToEdit}
       />
       <ConfirmDialog />
-      <Button icon="pi pi-plus" severity="success" raised label=" Agregar" onClick={openAddLanguageForm}/>
+      <Button
+        icon="pi pi-plus"
+        severity="success"
+        raised
+        label=" Agregar"
+        onClick={openAddLanguageForm}
+      />
       <DataTable value={languages} tableStyle={{ minWidth: "50rem" }}>
         <Column field="name" header="Language"></Column>
         <Column field="name" header="Acción" body={actionsTemplate}></Column>

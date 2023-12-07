@@ -69,22 +69,22 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
   };
 
   return (
-    <div>
-    <Dialog
-      header="Header"
-      visible={visible}
-      style={{ width: "50vw" }}
-      onHide={handleClose}
-      footer={footerContent}
-    >
-      <DuoInput
-        placeholder="Name or Language"
-        name="name"
-        value={language?.name}
-        error={errors.name}
-        onChange={handleChange}
-      />
-    </Dialog>
+    <div className="card">
+      <Dialog
+        header="Header"
+        visible={visible}
+        style={{ width: "50vw" }}
+        onHide={handleClose}
+        footer={footerContent}
+      >
+        <DuoInput
+          placeholder="Name or Language"
+          name="name"
+          value={language?.name}
+          error={errors.name}
+          onChange={handleChange}
+        />
+      </Dialog>
     </div>
   );
 };

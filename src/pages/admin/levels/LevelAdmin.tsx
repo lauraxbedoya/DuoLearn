@@ -1,48 +1,47 @@
+import LevelFormDialog from "@src/components/level/LevelFormDialog";
 import { BASE_API_URL } from "@src/config/env";
 import { getApiHeader } from "@src/helpers/api.helper";
-import { Section } from "@src/utils/interfaces/section";
+import { Level } from "@src/utils/interfaces/level";
+import { Button } from "primereact/button";
 import { Column } from "primereact/column";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./sectionsAdmin.module.scss";
-import SectionFormDialog from "@src/components/sections/SectionFormDialog";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { Button } from "primereact/button";
 
-export default function SectionsAdmin() {
-  const { languageId } = useParams();
-  const url = `${BASE_API_URL}/sections`;
-  const [sections, setSections] = useState<Section[]>([]);
+export default function LevelAdmin() {
   const [visible, setVisible] = useState(false);
-  const [sectionToEdit, setSectionToEdit] = useState<Section>();
+  const [levelToEdit, setLevelToEdit] = useState<Level>();
   const navigate = useNavigate();
+  const url = `${BASE_API_URL}/levels`;
+  const { sectionId } = useParams();
+  const [levels, setLevels] = useState<Level[]>([]);
 
-  const actionsTemplate = (section: Section) => {
+  const actionsTemplate = (level: Level) => {
     return (
-      <div className={styles.containerButtons}>
+      <div>
         <Button
           icon="pi pi-pencil"
           rounded
           text
           severity="secondary"
-          onClick={() => openEditLanguageForm(section)}
+          onClick={() => openEditLanguageForm(level)}
         />
         <Button
           icon="pi pi-trash"
           rounded
           text
           severity="secondary"
-          onClick={() => openConfirmDelete(section)}
+          onClick={() => openConfirmDelete(level)}
         />
       </div>
     );
   };
 
-  const enabledTemplate = (section: Section) => {
+  const enabledTemplate = (level: Level) => {
     return (
       <>
-        {section.enabled === true ? (
+        {level.enabled === true ? (
           <i className="pi pi-check" style={{ color: "green" }}></i>
         ) : (
           <i className="pi pi-times" style={{ color: "red" }}></i>
@@ -51,121 +50,121 @@ export default function SectionsAdmin() {
     );
   };
 
-  const sectionAdminLevelsTemplate = (section: Section) => {
+  const sectionAdminLevelsTemplate = (level: Level) => {
     return (
       <Button
         severity="secondary"
         text
-        onClick={() => handleAdminSections(section)}
+        onClick={() => handleAdminSections(level)}
       >
         Administrar niveles
       </Button>
     );
   };
 
-  const getSectionLanguageById = async () => {
-    const respStream = await fetch(`${url}/${languageId}`, {
+  const getLevelSectionById = async () => {
+    const respStream = await fetch(`${url}/${sectionId}`, {
       method: "GET",
       headers: getApiHeader(),
     });
     const resp = await respStream.json();
     if (resp) {
-      setSections(resp);
+      setLevels(resp);
     }
   };
 
   const openAddSectionForm = () => {
     setVisible(true);
-    setSectionToEdit(undefined);
+    setLevelToEdit(undefined);
   };
 
-  const handleAdd = async (section: Section) => {
+  const handleAdd = async (level: Level) => {
     const respStream = await fetch(url, {
       method: "POST",
       headers: getApiHeader(),
       body: JSON.stringify({
-        ...section,
-        languageId,
-        enabled: section.enabled || false,
+        ...level,
+        sectionId,
+        enabled: level.enabled || false,
       }),
     });
     if (respStream.status === 200) {
-      getSectionLanguageById();
+      getLevelSectionById();
     } else {
       alert("Error creating section");
     }
   };
 
-  const openEditLanguageForm = (section: Section) => {
+  const openEditLanguageForm = (level: Level) => {
     setVisible(true);
-    setSectionToEdit(section);
+    setLevelToEdit(level);
   };
 
-  const handleEdit = async (section: Section) => {
-    const respStream = await fetch(`${url}/${section.id}`, {
+  const handleEdit = async (level: Level) => {
+    const respStream = await fetch(`${url}/${level.id}`, {
       method: "PATCH",
       headers: getApiHeader(),
-      body: JSON.stringify(section),
+      body: JSON.stringify(level),
     });
     if (respStream.status === 200) {
-      getSectionLanguageById();
+      getLevelSectionById();
     } else {
       alert("Error editing section");
     }
   };
 
-  const openConfirmDelete = (section: Section) => {
+  const openConfirmDelete = (level: Level) => {
     confirmDialog({
       header: "Eliminar",
       message: "¿Esta seguro que desea eliminar esta sección?",
       acceptLabel: "Eliminar",
       rejectLabel: "Cancelar",
-      accept: () => handleDelete(Number(section.id)),
+      accept: () => handleDelete(Number(level.id)),
     });
   };
 
-  const handleDelete = async (sectionId: number) => {
-    const respStream = await fetch(`${url}/${sectionId}`, {
+  const handleDelete = async (levelId: number) => {
+    const respStream = await fetch(`${url}/${levelId}`, {
       method: "DELETE",
       headers: getApiHeader(),
     });
     if (respStream.status === 200) {
-      getSectionLanguageById();
+      getLevelSectionById();
     }
   };
 
-  const handleAdminSections = (section: Section) => {};
+  const handleAdminSections = (level: Level) => {};
 
-  const handleBackLanguage = () => {
-    navigate("/languages");
-  };
-
-  const handleSubmit = async (section?: Partial<Section>) => {
-    if (section?.id) {
-      await handleEdit(section as Section);
+  const handleSubmit = async (level?: Partial<Level>) => {
+    if (level?.id) {
+      await handleEdit(level as Level);
     } else {
-      await handleAdd(section as Section);
+      await handleAdd(level as Level);
     }
     setVisible(false);
   };
+
+  //   const handleBackLanguage = () => {
+  //     navigate(`/languages/${language.id}/sections`);
+  //   };
 
   const handleClose = () => {
     setVisible(false);
   };
 
   useEffect(() => {
-    if (languageId) {
-      getSectionLanguageById();
+    if (sectionId) {
+      getLevelSectionById();
     }
-  }, [languageId]);
+  }, [sectionId]);
 
   return (
     <div className="card">
-      <SectionFormDialog
+      <LevelFormDialog
         visible={visible}
         onSubmit={handleSubmit}
         onClose={handleClose}
-        section={sectionToEdit}
+        level={levelToEdit}
       />
       <ConfirmDialog />
       <Button
@@ -175,17 +174,12 @@ export default function SectionsAdmin() {
         label=" Agregar"
         onClick={openAddSectionForm}
       />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Volver"
-        onClick={handleBackLanguage}
-      />
-      <DataTable value={sections} tableStyle={{ minWidth: "50rem" }}>
-        <Column field="description" header="Section"></Column>
-        <Column field="color" header="Color"></Column>
+      <DataTable value={levels} tableStyle={{ width: "100%" }}>
+        <Column field="title" header="Level"></Column>
+        <Column field="description" header="Description"></Column>
         <Column field="order" header="Order"></Column>
+        <Column field="imageUrl" header="imageUrl"></Column>
+        <Column field="type" header="type"></Column>
         <Column
           field="enabled"
           header="Enabled"

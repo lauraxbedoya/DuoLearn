@@ -12,7 +12,8 @@ import {
 import Layout from "./components/Layout/Layout";
 import LanguagesAdmin from "./pages/admin/languages/LanguagesAdmin";
 import Button from "./components/button/buttons";
-import SectionsAdmin from "./pages/admin/Sections/SectionsAdmin";
+import SectionAdmin from "./pages/admin/sections/SectionAdmin";
+import LevelAdmin from "./pages/admin/levels/LevelAdmin";
 
 const AppRouter = () => {
   const { isAuthenticating, isAuthenticated, error } = useAppSelector(
@@ -53,11 +54,20 @@ const AppRouter = () => {
   return (
     <Routes>
       {isAuthenticated ? (
-          <Route path="/" element={<Layout onLogout={handleLogout} />}>
+        <Route path="/" element={<Layout onLogout={handleLogout} />}>
           <Route path="/" element={<Home />}></Route>
 
           <Route path="/languages" element={<LanguagesAdmin />}></Route>
-          <Route path={`/languages/:languageId/sections`} element={<SectionsAdmin />}></Route>
+
+          <Route
+            path={`/languages/:languageId/sections`}
+            element={<SectionAdmin />}
+          ></Route>
+
+          <Route
+            path={`/languages/:languageId/sections/:sectionId/levels`}
+            element={<LevelAdmin />}
+          ></Route>
 
           <Route path="*" element={<Navigate to="/" />} />
         </Route>

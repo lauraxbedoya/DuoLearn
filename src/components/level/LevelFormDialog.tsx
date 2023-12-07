@@ -1,38 +1,34 @@
+import { Level } from "@src/utils/interfaces/level";
 import { FC, useEffect, useState } from "react";
+import Button from "../button/buttons";
 import { Dialog } from "primereact/dialog";
 import DuoInput from "../input/DuoInput";
-import Button from "../button/buttons";
-import { Section } from "@src/utils/interfaces/section";
 import { InputSwitch } from "primereact/inputswitch";
 
-interface SectionDialogProps {
+interface LevelDialogProps {
   visible: boolean;
   onClose: () => void;
-  onSubmit: (section?: Partial<Section>) => void;
-  section?: Section;
+  onSubmit: (level?: Partial<Level>) => void;
+  level?: Level;
 }
 
-const SectionFormDialog: FC<SectionDialogProps> = ({
+const LevelFormDialog: FC<LevelDialogProps> = ({
   visible,
   onClose,
-  section: sectionToEdit,
+  level: levelToEdit,
   onSubmit,
 }) => {
-  const [section, setSection] = useState<Partial<Section> | undefined>(
-    sectionToEdit
-  );
+  const [level, setLevel] = useState<Partial<Level> | undefined>(levelToEdit);
   const [errors, setErrors] = useState<any>({});
 
   const handleClose = () => {
-    setSection(undefined);
+    setLevel(undefined);
     onClose();
   };
 
-  const validateForm = (
-    handleSubmit: (section?: Partial<Section>) => void
-  ) => {
+  const validateForm = (handleSubmit: (level?: Partial<Level>) => void) => {
     const newErrors: any = {};
-    if (!section?.description || !section?.color || !section?.order) {
+    if (!level?.description || !level?.title || !level?.type || !level?.order) {
       newErrors.name = "Field are required";
     }
 
@@ -42,14 +38,14 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
     }
 
     setErrors({});
-    handleSubmit(section);
+    handleSubmit(level);
   };
 
   useEffect(() => {
-    if (sectionToEdit) {
-      setSection(sectionToEdit);
+    if (levelToEdit) {
+      setLevel(levelToEdit);
     }
-  }, [sectionToEdit]);
+  }, [levelToEdit]);
 
   const footerContent = (
     <div>
@@ -63,8 +59,8 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
   );
 
   const handleChange = (key: any, value: any) => {
-    setSection({
-      ...section,
+    setLevel({
+      ...level,
       [key]: value,
     });
   };
@@ -78,31 +74,52 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
       footer={footerContent}
     >
       <DuoInput
+        placeholder="Title"
+        name="title"
+        value={level?.title}
+        error={errors.title}
+        onChange={handleChange}
+      />
+
+      <DuoInput
         placeholder="Description"
         name="description"
-        value={section?.description}
+        value={level?.description}
         error={errors.description}
         onChange={handleChange}
       />
 
       <DuoInput
-        placeholder="Color"
-        name="color"
-        value={section?.color}
-        error={errors.color}
+        placeholder="Image"
+        name="imageUrl"
+        value={level?.imageUrl}
+        error={errors.imageUrl}
         onChange={handleChange}
       />
 
       <DuoInput
         placeholder="Order"
         name="order"
-        value={section?.order}
+        value={level?.order}
         error={errors.order}
         onChange={handleChange}
       />
-      <InputSwitch checked={section?.enabled || false} name="enabled" onChange={(e) => handleChange(e.target.name, e.value)} />
+
+      <DuoInput
+        placeholder="Type"
+        name="type"
+        value={level?.type}
+        error={errors.type}
+        onChange={handleChange}
+      />
+
+      <InputSwitch
+        checked={level?.enabled || false}
+        name="enabled"
+        onChange={(e) => handleChange(e.target.name, e.value)}
+      />
     </Dialog>
   );
 };
 
-export default SectionFormDialog;
+export default LevelFormDialog;
