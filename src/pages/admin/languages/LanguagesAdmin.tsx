@@ -156,7 +156,7 @@ export default function LanguagesAdmin() {
       />
       <DataTable value={languages} tableStyle={{ minWidth: "50rem" }}>
         <Column field="name" header="Language"></Column>
-        <Column field="name" header="Acción" body={actionsTemplate}></Column>
+        <Column field="name" header="Action" body={actionsTemplate}></Column>
         <Column header="Language" body={languageAdminSectionsTemplate}></Column>
       </DataTable>
     </div>

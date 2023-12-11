@@ -193,7 +193,7 @@ export default function SectionAdmin() {
           header="Enabled"
           body={enabledTemplate}
         ></Column>
-        <Column field="name" header="Acción" body={actionsTemplate}></Column>
+        <Column field="name" header="Action" body={actionsTemplate}></Column>
         <Column header="Section" body={sectionAdminLevelsTemplate}></Column>
       </DataTable>
     </div>

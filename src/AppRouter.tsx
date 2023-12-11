@@ -14,6 +14,7 @@ import LanguagesAdmin from "./pages/admin/languages/LanguagesAdmin";
 import Button from "./components/button/buttons";
 import SectionAdmin from "./pages/admin/sections/SectionAdmin";
 import LevelAdmin from "./pages/admin/levels/LevelAdmin";
+import LessonAdmin from "./pages/admin/lesson/lessonAdmin";
 
 const AppRouter = () => {
   const { isAuthenticating, isAuthenticated, error } = useAppSelector(
@@ -67,6 +68,11 @@ const AppRouter = () => {
           <Route
             path={`/languages/:languageId/sections/:sectionId/levels`}
             element={<LevelAdmin />}
+          ></Route>
+
+          <Route
+            path={`/languages/:languageId/sections/:sectionId/levels/:levelId/lessons`}
+            element={<LessonAdmin />}
           ></Route>
 
           <Route path="*" element={<Navigate to="/" />} />

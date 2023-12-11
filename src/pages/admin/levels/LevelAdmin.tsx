@@ -12,10 +12,11 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function LevelAdmin() {
   const [visible, setVisible] = useState(false);
   const [levelToEdit, setLevelToEdit] = useState<Level>();
-  const navigate = useNavigate();
   const url = `${BASE_API_URL}/levels`;
   const { sectionId } = useParams();
   const [levels, setLevels] = useState<Level[]>([]);
+  const navigate = useNavigate();
+  const { languageId } = useParams();
 
   const actionsTemplate = (level: Level) => {
     return (
@@ -25,7 +26,7 @@ export default function LevelAdmin() {
           rounded
           text
           severity="secondary"
-          onClick={() => openEditLanguageForm(level)}
+          onClick={() => openEditLevelForm(level)}
         />
         <Button
           icon="pi pi-trash"
@@ -73,7 +74,7 @@ export default function LevelAdmin() {
     }
   };
 
-  const openAddSectionForm = () => {
+  const openAddLevelForm = () => {
     setVisible(true);
     setLevelToEdit(undefined);
   };
@@ -91,11 +92,11 @@ export default function LevelAdmin() {
     if (respStream.status === 200) {
       getLevelSectionById();
     } else {
-      alert("Error creating section");
+      alert("Error creating level");
     }
   };
 
-  const openEditLanguageForm = (level: Level) => {
+  const openEditLevelForm = (level: Level) => {
     setVisible(true);
     setLevelToEdit(level);
   };
@@ -109,14 +110,14 @@ export default function LevelAdmin() {
     if (respStream.status === 200) {
       getLevelSectionById();
     } else {
-      alert("Error editing section");
+      alert("Error editing level");
     }
   };
 
   const openConfirmDelete = (level: Level) => {
     confirmDialog({
       header: "Eliminar",
-      message: "¿Esta seguro que desea eliminar esta sección?",
+      message: "¿Esta seguro que desea eliminar este nivel?",
       acceptLabel: "Eliminar",
       rejectLabel: "Cancelar",
       accept: () => handleDelete(Number(level.id)),
@@ -133,7 +134,15 @@ export default function LevelAdmin() {
     }
   };
 
-  const handleAdminSections = (level: Level) => {};
+  const handleAdminSections = (level: Level) => {
+    navigate(
+      `/languages/${languageId}/sections/${sectionId}/levels/${level.id}/lessons`
+    );
+  };
+
+  const handleBackLanguage = () => {
+    navigate(`/languages/${languageId}/sections`);
+  };
 
   const handleSubmit = async (level?: Partial<Level>) => {
     if (level?.id) {
@@ -143,10 +152,6 @@ export default function LevelAdmin() {
     }
     setVisible(false);
   };
-
-  //   const handleBackLanguage = () => {
-  //     navigate(`/languages/${language.id}/sections`);
-  //   };
 
   const handleClose = () => {
     setVisible(false);
@@ -172,7 +177,14 @@ export default function LevelAdmin() {
         severity="success"
         raised
         label=" Agregar"
-        onClick={openAddSectionForm}
+        onClick={openAddLevelForm}
+      />
+      <Button
+        icon="pi pi-plus"
+        severity="success"
+        raised
+        label=" Volver"
+        onClick={handleBackLanguage}
       />
       <DataTable value={levels} tableStyle={{ width: "100%" }}>
         <Column field="title" header="Level"></Column>
@@ -185,8 +197,8 @@ export default function LevelAdmin() {
           header="Enabled"
           body={enabledTemplate}
         ></Column>
-        <Column field="name" header="Acción" body={actionsTemplate}></Column>
-        <Column header="Section" body={sectionAdminLevelsTemplate}></Column>
+        <Column field="name" header="Action" body={actionsTemplate}></Column>
+        <Column header="Level" body={sectionAdminLevelsTemplate}></Column>
       </DataTable>
     </div>
   );
