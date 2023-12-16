@@ -1,4 +1,4 @@
-import LevelFormDialog from "@src/components/level/LevelFormDialog";
+import LevelFormDialog from "@src/components/adminDialogs/level/LevelFormDialog";
 import { BASE_API_URL } from "@src/config/env";
 import { getApiHeader } from "@src/helpers/api.helper";
 import { Level } from "@src/utils/interfaces/level";

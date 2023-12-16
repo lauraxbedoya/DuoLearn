@@ -6,7 +6,7 @@ import { getApiHeader } from "@src/helpers/api.helper";
 import styles from "./language.module.scss";
 import { Language } from "../../../utils/interfaces/language";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import LanguageFormDialog from "../../../components/language/LanguageFormDialog";
+import LanguageFormDialog from "../../../components/adminDialogs/language/LanguageFormDialog";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 

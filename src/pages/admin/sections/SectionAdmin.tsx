@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./sectionAdmin.module.scss";
-import SectionFormDialog from "@src/components/section/SectionFormDialog";
+import SectionFormDialog from "@src/components/adminDialogs/section/SectionFormDialog";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Button } from "primereact/button";
 

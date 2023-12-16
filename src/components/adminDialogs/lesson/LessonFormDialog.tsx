@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import Button from "../button/buttons";
+import Button from "../../button/buttons";
 import { Dialog } from "primereact/dialog";
-import DuoInput from "../input/DuoInput";
+import DuoInput from "../../input/DuoInput";
 import { Lesson } from "@src/utils/interfaces/lesson";
 import { InputSwitch } from "primereact/inputswitch";
 

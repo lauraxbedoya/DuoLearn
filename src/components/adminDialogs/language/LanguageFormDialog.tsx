@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import DuoInput from "../input/DuoInput";
-import { Language } from "../../utils/interfaces/language";
-import Button from "../button/buttons";
+import DuoInput from "../../input/DuoInput";
+import { Language } from "../../../utils/interfaces/language";
+import Button from "../../button/buttons";
 
 interface LanguageDialogProps {
   visible: boolean;

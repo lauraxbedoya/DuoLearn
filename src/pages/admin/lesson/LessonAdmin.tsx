@@ -1,4 +1,4 @@
-import LessonFormDialog from "@src/components/lesson/LessonFormDialog";
+import LessonFormDialog from "@src/components/adminDialogs/lesson/LessonFormDialog";
 import { BASE_API_URL } from "@src/config/env";
 import { getApiHeader } from "@src/helpers/api.helper";
 import { Lesson } from "@src/utils/interfaces/lesson";
@@ -134,9 +134,13 @@ export default function LessonAdmin() {
     }
   };
 
-  const handleAdminLessons = (lesson: Lesson) => {};
+  const handleAdminLessons = (lesson: Lesson) => {
+    navigate(
+      `/languages/${languageId}/sections/${sectionId}/levels/${levelId}/lessons/${lesson.id}/questions`
+    );
+  };
 
-  const handleBackLanguage = () => {
+  const handleBackLevel = () => {
     navigate(`/languages/${languageId}/sections/${sectionId}/levels`);
   };
 
@@ -180,7 +184,7 @@ export default function LessonAdmin() {
         severity="success"
         raised
         label=" Volver"
-        onClick={handleBackLanguage}
+        onClick={handleBackLevel}
       />
       <DataTable value={lessons} tableStyle={{ width: "100%" }}>
         <Column field="experience" header="Experience"></Column>
