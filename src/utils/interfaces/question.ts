@@ -15,7 +15,7 @@ export interface QuestionMetadata {
   answer?: string;
   options?: string[];
   answers?: string[];
-  pairs?: PairMetadata;
+  pairs?: PairMetadata[];
 }
 
 export interface PairMetadata {

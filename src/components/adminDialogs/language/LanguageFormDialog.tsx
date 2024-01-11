@@ -3,6 +3,8 @@ import { Dialog } from "primereact/dialog";
 import DuoInput from "../../input/DuoInput";
 import { Language } from "../../../utils/interfaces/language";
 import Button from "../../button/buttons";
+import { validateLanguageForm } from "../validators/languageValidator";
+import styles from "./languageFormDialog.module.scss";
 
 interface LanguageDialogProps {
   visible: boolean;
@@ -30,10 +32,7 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
   const validateForm = (
     handleSubmit: (language?: Partial<Language>) => void
   ) => {
-    const newErrors: any = {};
-    if (!language?.name) {
-      newErrors.name = "Name is required";
-    }
+    const newErrors = validateLanguageForm(language);
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -51,12 +50,18 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
   }, [languageToEdit]);
 
   const footerContent = (
-    <div>
-      <Button onClick={handleClose} className="p-button-text">
-        Cancel
-      </Button>
-      <Button isMain onClick={() => validateForm(onSubmit)} autoFocus>
+    <div className={styles.containerButtonsAction}>
+      <Button
+        isMain
+        onClick={() => validateForm(onSubmit)}
+        autoFocus
+        size="sm"
+        className={styles.addButton}
+      >
         Add
+      </Button>
+      <Button onClick={handleClose} className={styles.cancelButton} size="sm">
+        Cancel
       </Button>
     </div>
   );
@@ -71,19 +76,21 @@ const LanguageFormDialog: FC<LanguageDialogProps> = ({
   return (
     <div className="card">
       <Dialog
-        header="Header"
+        header="Language"
         visible={visible}
-        style={{ width: "50vw" }}
+        style={{ width: "35vw" }}
         onHide={handleClose}
         footer={footerContent}
       >
-        <DuoInput
-          placeholder="Name or Language"
-          name="name"
-          value={language?.name}
-          error={errors.name}
-          onChange={handleChange}
-        />
+        <div>
+          <DuoInput
+            placeholder="Name or Language"
+            name="name"
+            value={language?.name}
+            error={errors.name}
+            onChange={handleChange}
+          />
+        </div>
       </Dialog>
     </div>
   );

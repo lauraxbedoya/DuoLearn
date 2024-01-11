@@ -45,7 +45,7 @@ export default function LanguagesAdmin() {
         text
         onClick={() => handleAdminSections(language)}
       >
-        Administrar secciones
+        Manage sections
       </Button>
     );
   };
@@ -139,25 +139,43 @@ export default function LanguagesAdmin() {
   }, []);
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <LanguageFormDialog
         visible={visible}
         onSubmit={handleSubmit}
         onClose={handleClose}
         language={languageToEdit}
       />
+
       <ConfirmDialog />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Agregar"
-        onClick={openAddLanguageForm}
-      />
-      <DataTable value={languages} tableStyle={{ minWidth: "50rem" }}>
-        <Column field="name" header="Language"></Column>
+
+      <div>
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Add"
+          onClick={openAddLanguageForm}
+          className={styles.addButton}
+        />
+      </div>
+
+      <DataTable
+        value={languages}
+        scrollable
+        scrollHeight="600px"
+        tableStyle={{ minWidth: "50rem" }}
+      >
+        <Column
+          field="name"
+          header="Language"
+          className={styles.language}
+        ></Column>
         <Column field="name" header="Action" body={actionsTemplate}></Column>
-        <Column header="Language" body={languageAdminSectionsTemplate}></Column>
+        <Column
+          header="Manage Sections"
+          body={languageAdminSectionsTemplate}
+        ></Column>
       </DataTable>
     </div>
   );

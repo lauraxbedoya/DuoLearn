@@ -4,6 +4,8 @@ import { Dialog } from "primereact/dialog";
 import DuoInput from "../../input/DuoInput";
 import { Lesson } from "@src/utils/interfaces/lesson";
 import { InputSwitch } from "primereact/inputswitch";
+import { validateLessonForm } from "../validators/lessonValidator";
+import styles from "./lessonFormDialog.module.scss";
 
 interface LessonDialogProps {
   visible: boolean;
@@ -29,15 +31,7 @@ const LessonFormDialog: FC<LessonDialogProps> = ({
   };
 
   const validateForm = (handleSubmit: (lesson?: Partial<Lesson>) => void) => {
-    const newErrors: any = {};
-    if (
-      !lesson?.experience ||
-      !lesson?.practiceExperience ||
-      !lesson?.isPractice ||
-      !lesson?.order
-    ) {
-      newErrors.name = "Field are required";
-    }
+    const newErrors = validateLessonForm(lesson);
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -55,12 +49,18 @@ const LessonFormDialog: FC<LessonDialogProps> = ({
   }, [lessonToEdit]);
 
   const footerContent = (
-    <div>
-      <Button onClick={handleClose} className="p-button-text">
-        Cancel
-      </Button>
-      <Button isMain onClick={() => validateForm(onSubmit)} autoFocus>
+    <div className={styles.containerButtonsAction}>
+      <Button
+        isMain
+        onClick={() => validateForm(onSubmit)}
+        autoFocus
+        size="sm"
+        className={styles.addButton}
+      >
         Add
+      </Button>
+      <Button onClick={handleClose} className={styles.cancelButton} size="sm">
+        Cancel
       </Button>
     </div>
   );
@@ -74,9 +74,9 @@ const LessonFormDialog: FC<LessonDialogProps> = ({
 
   return (
     <Dialog
-      header="Header"
+      header="Lesson"
       visible={visible}
-      style={{ width: "50vw" }}
+      style={{ width: "35vw" }}
       onHide={handleClose}
       footer={footerContent}
     >
@@ -86,6 +86,7 @@ const LessonFormDialog: FC<LessonDialogProps> = ({
         value={lesson?.experience}
         error={errors.experience}
         onChange={handleChange}
+        className={styles.experience}
       />
 
       <DuoInput
@@ -95,13 +96,18 @@ const LessonFormDialog: FC<LessonDialogProps> = ({
         value={lesson?.practiceExperience}
         error={errors.practiceExperience}
         onChange={handleChange}
+        className={styles.practiceExperience}
       />
 
-      <InputSwitch
-        checked={lesson?.isPractice || false}
-        name="isPractice"
-        onChange={(e) => handleChange(e.target.name, e.value)}
-      />
+      <div className={styles.containerInput}>
+        <span className={styles.spanInput}>Enabled</span>
+        <InputSwitch
+          checked={lesson?.isPractice || false}
+          name="isPractice"
+          onChange={(e) => handleChange(e.target.name, e.value)}
+          className={styles.isPractice}
+        />
+      </div>
 
       <DuoInput
         placeholder="Order"

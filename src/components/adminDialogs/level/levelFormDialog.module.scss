@@ -1,0 +1,42 @@
+.containerButtonsAction {
+  display: flex;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.addButton {
+  margin-right: 28px;
+  font-weight: 600;
+}
+
+.cancelButton {
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.spanInput {
+  margin-bottom: 10px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
+.imageUrl {
+  margin-bottom: 10px;
+}
+
+.order {
+  margin-bottom: 10px;
+}
+
+.type {
+  margin-bottom: 15px;
+}

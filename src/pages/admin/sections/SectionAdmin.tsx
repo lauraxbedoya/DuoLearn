@@ -9,6 +9,7 @@ import styles from "./sectionAdmin.module.scss";
 import SectionFormDialog from "@src/components/adminDialogs/section/SectionFormDialog";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Button } from "primereact/button";
+import { ColorPicker } from "primereact/colorpicker";
 
 export default function SectionAdmin() {
   const { languageId } = useParams();
@@ -39,6 +40,10 @@ export default function SectionAdmin() {
     );
   };
 
+  const colorTemplate = (section: Section) => {
+    return <ColorPicker value={section.color} disabled />;
+  };
+
   const enabledTemplate = (section: Section) => {
     return (
       <>
@@ -58,7 +63,7 @@ export default function SectionAdmin() {
         text
         onClick={() => handleAdminSections(section)}
       >
-        Administrar niveles
+        Manage levels
       </Button>
     );
   };
@@ -135,7 +140,7 @@ export default function SectionAdmin() {
   };
 
   const handleAdminSections = (section: Section) => {
-    navigate(`/languages/${languageId}/sections/${section.id}/levels`);
+    navigate(`/sections/${section.id}/levels`);
   };
 
   const handleBackLanguage = () => {
@@ -162,7 +167,7 @@ export default function SectionAdmin() {
   }, [languageId]);
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <SectionFormDialog
         visible={visible}
         onSubmit={handleSubmit}
@@ -170,23 +175,29 @@ export default function SectionAdmin() {
         section={sectionToEdit}
       />
       <ConfirmDialog />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Agregar"
-        onClick={openAddSectionForm}
-      />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Volver"
-        onClick={handleBackLanguage}
-      />
+
+      <div>
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Add"
+          onClick={openAddSectionForm}
+          className={styles.addOrBackButton}
+        />
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Back"
+          onClick={handleBackLanguage}
+          className={styles.addOrBackButton}
+        />
+      </div>
+
       <DataTable value={sections} tableStyle={{ minWidth: "50rem" }}>
         <Column field="description" header="Section"></Column>
-        <Column field="color" header="Color"></Column>
+        <Column field="color" header="Color" body={colorTemplate}></Column>
         <Column field="order" header="Order"></Column>
         <Column
           field="enabled"
@@ -194,7 +205,10 @@ export default function SectionAdmin() {
           body={enabledTemplate}
         ></Column>
         <Column field="name" header="Action" body={actionsTemplate}></Column>
-        <Column header="Section" body={sectionAdminLevelsTemplate}></Column>
+        <Column
+          header="Manage Levels"
+          body={sectionAdminLevelsTemplate}
+        ></Column>
       </DataTable>
     </div>
   );

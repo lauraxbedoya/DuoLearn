@@ -1,7 +1,7 @@
 export enum TypesOfQuestionsEnum {
-  TRANS_TILES = 0,
-  PAIR_WORDS_TILES = 1,
-  CHOOSE_IMAGE_ACCOR_WORD = 2,
-  CONVERSATION = 3,
-  TRANS_TYPING = 4,
+  TranslateWithTiles = 1,
+  PairWordsWithTiles = 2,
+  ChooseImageAccordingToWord = 3,
+  Conversation = 4,
+  TranslateTyping = 5,
 }

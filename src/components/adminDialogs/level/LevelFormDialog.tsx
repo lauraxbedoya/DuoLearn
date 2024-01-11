@@ -4,6 +4,8 @@ import Button from "../../button/buttons";
 import { Dialog } from "primereact/dialog";
 import DuoInput from "../../input/DuoInput";
 import { InputSwitch } from "primereact/inputswitch";
+import { validateLevelForm } from "../validators/levelValidator";
+import styles from "./levelFormDialog.module.scss";
 
 interface LevelDialogProps {
   visible: boolean;
@@ -27,10 +29,7 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
   };
 
   const validateForm = (handleSubmit: (level?: Partial<Level>) => void) => {
-    const newErrors: any = {};
-    if (!level?.description || !level?.title || !level?.type || !level?.order) {
-      newErrors.name = "Field are required";
-    }
+    const newErrors = validateLevelForm(level);
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -48,12 +47,18 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
   }, [levelToEdit]);
 
   const footerContent = (
-    <div>
-      <Button onClick={handleClose} className="p-button-text">
-        Cancel
-      </Button>
-      <Button isMain onClick={() => validateForm(onSubmit)} autoFocus>
+    <div className={styles.containerButtonsAction}>
+      <Button
+        isMain
+        onClick={() => validateForm(onSubmit)}
+        autoFocus
+        size="sm"
+        className={styles.addButton}
+      >
         Add
+      </Button>
+      <Button onClick={handleClose} className={styles.cancelButton} size="sm">
+        Cancel
       </Button>
     </div>
   );
@@ -67,9 +72,9 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
 
   return (
     <Dialog
-      header="Header"
+      header="Level"
       visible={visible}
-      style={{ width: "50vw" }}
+      style={{ width: "35vw" }}
       onHide={handleClose}
       footer={footerContent}
     >
@@ -79,6 +84,7 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
         value={level?.title}
         error={errors.title}
         onChange={handleChange}
+        className={styles.title}
       />
 
       <DuoInput
@@ -87,6 +93,7 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
         value={level?.description}
         error={errors.description}
         onChange={handleChange}
+        className={styles.description}
       />
 
       <DuoInput
@@ -95,6 +102,7 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
         value={level?.imageUrl}
         error={errors.imageUrl}
         onChange={handleChange}
+        className={styles.imageUrl}
       />
 
       <DuoInput
@@ -103,6 +111,7 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
         value={level?.order}
         error={errors.order}
         onChange={handleChange}
+        className={styles.order}
       />
 
       <DuoInput
@@ -111,13 +120,17 @@ const LevelFormDialog: FC<LevelDialogProps> = ({
         value={level?.type}
         error={errors.type}
         onChange={handleChange}
+        className={styles.type}
       />
 
-      <InputSwitch
-        checked={level?.enabled || false}
-        name="enabled"
-        onChange={(e) => handleChange(e.target.name, e.value)}
-      />
+      <div className={styles.containerInput}>
+        <span className={styles.spanInput}>Enabled</span>
+        <InputSwitch
+          checked={level?.enabled || false}
+          name="enabled"
+          onChange={(e) => handleChange(e.target.name, e.value)}
+        />
+      </div>
     </Dialog>
   );
 };

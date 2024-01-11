@@ -8,6 +8,7 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styles from "./levelAdmin.module.scss";
 
 export default function LevelAdmin() {
   const [visible, setVisible] = useState(false);
@@ -16,7 +17,6 @@ export default function LevelAdmin() {
   const { sectionId } = useParams();
   const [levels, setLevels] = useState<Level[]>([]);
   const navigate = useNavigate();
-  const { languageId } = useParams();
 
   const actionsTemplate = (level: Level) => {
     return (
@@ -58,7 +58,7 @@ export default function LevelAdmin() {
         text
         onClick={() => handleAdminSections(level)}
       >
-        Administrar niveles
+        Manage lections
       </Button>
     );
   };
@@ -135,13 +135,7 @@ export default function LevelAdmin() {
   };
 
   const handleAdminSections = (level: Level) => {
-    navigate(
-      `/languages/${languageId}/sections/${sectionId}/levels/${level.id}/lessons`
-    );
-  };
-
-  const handleBackLanguage = () => {
-    navigate(`/languages/${languageId}/sections`);
+    navigate(`/levels/${level.id}/lessons`);
   };
 
   const handleSubmit = async (level?: Partial<Level>) => {
@@ -164,41 +158,56 @@ export default function LevelAdmin() {
   }, [sectionId]);
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <LevelFormDialog
         visible={visible}
         onSubmit={handleSubmit}
         onClose={handleClose}
         level={levelToEdit}
       />
+
       <ConfirmDialog />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Agregar"
-        onClick={openAddLevelForm}
-      />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Volver"
-        onClick={handleBackLanguage}
-      />
-      <DataTable value={levels} tableStyle={{ width: "100%" }}>
+
+      <div>
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Add"
+          onClick={openAddLevelForm}
+          className={styles.addOrBackButton}
+        />
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Back"
+          onClick={() => navigate(-1)}
+          className={styles.addOrBackButton}
+        />
+      </div>
+
+      <DataTable
+        value={levels}
+        scrollable
+        scrollHeight="600px"
+        tableStyle={{ width: "100%" }}
+      >
         <Column field="title" header="Level"></Column>
         <Column field="description" header="Description"></Column>
+        <Column field="imageUrl" header="ImageUrl"></Column>
         <Column field="order" header="Order"></Column>
-        <Column field="imageUrl" header="imageUrl"></Column>
-        <Column field="type" header="type"></Column>
+        <Column field="type" header="Type"></Column>
         <Column
           field="enabled"
           header="Enabled"
           body={enabledTemplate}
         ></Column>
         <Column field="name" header="Action" body={actionsTemplate}></Column>
-        <Column header="Level" body={sectionAdminLevelsTemplate}></Column>
+        <Column
+          header="Manage Lections"
+          body={sectionAdminLevelsTemplate}
+        ></Column>
       </DataTable>
     </div>
   );

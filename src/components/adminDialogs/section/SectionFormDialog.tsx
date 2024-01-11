@@ -4,6 +4,9 @@ import DuoInput from "../../input/DuoInput";
 import Button from "../../button/buttons";
 import { Section } from "@src/utils/interfaces/section";
 import { InputSwitch } from "primereact/inputswitch";
+import { validateSectionForm } from "../validators/sectionValidator";
+import styles from "./sectionFormDialog.module.scss";
+import { ColorPicker } from "primereact/colorpicker";
 
 interface SectionDialogProps {
   visible: boolean;
@@ -29,10 +32,7 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
   };
 
   const validateForm = (handleSubmit: (section?: Partial<Section>) => void) => {
-    const newErrors: any = {};
-    if (!section?.description || !section?.color || !section?.order) {
-      newErrors.name = "Field are required";
-    }
+    const newErrors = validateSectionForm(section);
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -50,12 +50,18 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
   }, [sectionToEdit]);
 
   const footerContent = (
-    <div>
-      <Button onClick={handleClose} className="p-button-text">
-        Cancel
-      </Button>
-      <Button isMain onClick={() => validateForm(onSubmit)} autoFocus>
+    <div className={styles.containerButtonsAction}>
+      <Button
+        isMain
+        onClick={() => validateForm(onSubmit)}
+        autoFocus
+        size="sm"
+        className={styles.addButton}
+      >
         Add
+      </Button>
+      <Button onClick={handleClose} className={styles.cancelButton} size="sm">
+        Cancel
       </Button>
     </div>
   );
@@ -69,9 +75,9 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
 
   return (
     <Dialog
-      header="Header"
+      header="Section"
       visible={visible}
-      style={{ width: "50vw" }}
+      style={{ width: "35vw" }}
       onHide={handleClose}
       footer={footerContent}
     >
@@ -81,15 +87,18 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
         value={section?.description}
         error={errors.description}
         onChange={handleChange}
+        className={styles.description}
       />
 
-      <DuoInput
-        placeholder="Color"
-        name="color"
-        value={section?.color}
-        error={errors.color}
-        onChange={handleChange}
-      />
+      <div className={styles.containerInput}>
+        <span className={styles.spanInput}>Color</span>
+        <ColorPicker
+          value={section?.color}
+          name="color"
+          onChange={(e) => handleChange(e.target.name, e.value)}
+          className={styles.color}
+        />
+      </div>
 
       <DuoInput
         placeholder="Order"
@@ -97,13 +106,17 @@ const SectionFormDialog: FC<SectionDialogProps> = ({
         value={section?.order}
         error={errors.order}
         onChange={handleChange}
+        className={styles.order}
       />
 
-      <InputSwitch
-        checked={section?.enabled || false}
-        name="enabled"
-        onChange={(e) => handleChange(e.target.name, e.value)}
-      />
+      <div className={styles.containerInput}>
+        <span className={styles.spanInput}>Enabled</span>
+        <InputSwitch
+          checked={section?.enabled || false}
+          name="enabled"
+          onChange={(e) => handleChange(e.target.name, e.value)}
+        />
+      </div>
     </Dialog>
   );
 };

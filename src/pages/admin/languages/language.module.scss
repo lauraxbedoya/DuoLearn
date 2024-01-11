@@ -1,8 +1,18 @@
-.containerButtons {
-    display: flex;
-    flex-direction: row;
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.buttonDialog {
-    padding: 0 15px;
+.containerButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+.addButton {
+  margin: 0 10px 15px 0;
+}
+
+.language {
+  text-transform: capitalize;
 }

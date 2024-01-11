@@ -8,6 +8,7 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styles from "./questionAdmin.module.scss";
 
 export default function QuestionAdmin() {
   const [visible, setVisible] = useState(false);
@@ -16,9 +17,6 @@ export default function QuestionAdmin() {
   const { lessonId } = useParams();
   const [questions, setQuestions] = useState<Question[]>([]);
   const navigate = useNavigate();
-  const { languageId } = useParams();
-  const { sectionId } = useParams();
-  const { levelId } = useParams();
 
   const actionsTemplate = (question: Question) => {
     return (
@@ -111,12 +109,6 @@ export default function QuestionAdmin() {
     }
   };
 
-  const handleBackLesson = () => {
-    navigate(
-      `/languages/${languageId}/sections/${sectionId}/levels/${levelId}/lessons`
-    );
-  };
-
   const handleSubmit = async (question?: Partial<Question>) => {
     if (question?.id) {
       await handleEdit(question as Question);
@@ -137,33 +129,45 @@ export default function QuestionAdmin() {
   }, [lessonId]);
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <QuestionFormDialog
         visible={visible}
         onSubmit={handleSubmit}
         onClose={handleClose}
         question={questionToEdit}
       />
-      <ConfirmDialog />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Agregar"
-        onClick={openAddQuestionForm}
-      />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Volver"
-        onClick={handleBackLesson}
-      />
 
-      <DataTable value={questions} tableStyle={{ width: "100%" }}>
+      <ConfirmDialog />
+
+      <div>
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label=" Add"
+          onClick={openAddQuestionForm}
+          className={styles.addOrBackButton}
+        />
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label=" Back"
+          onClick={() => navigate(-1)}
+          className={styles.addOrBackButton}
+        />
+      </div>
+
+      <DataTable
+        value={questions}
+        scrollable
+        scrollHeight="600px"
+        tableStyle={{ width: "100%" }}
+      >
         <Column field="text" header="Question"></Column>
-        <Column field="feedback" header="feedback"></Column>
+        <Column field="feedback" header="Feedback"></Column>
         <Column field="order" header="Order"></Column>
+        <Column field="type" header="Type"></Column>
         <Column field="name" header="Action" body={actionsTemplate}></Column>
       </DataTable>
     </div>

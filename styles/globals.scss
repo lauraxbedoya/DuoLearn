@@ -1,9 +1,18 @@
-@import './colors.scss';
+@import "./colors.scss";
 
 .p-calendar {
-    width: 100%;
+  width: 100%;
 }
 
 .p-tieredmenu .p-menuitem {
-    height: 60px;
+  height: 100px;
+}
+
+.p-menuitem {
+  padding: 7px 0 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  max-width: 200px;
+  min-width: 150px;
 }

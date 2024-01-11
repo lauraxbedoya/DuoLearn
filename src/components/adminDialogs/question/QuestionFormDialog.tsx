@@ -5,7 +5,13 @@ import DuoInput from "../../input/DuoInput";
 import { Question } from "@src/utils/interfaces/question";
 import { Dropdown } from "primereact/dropdown";
 import { TypesOfQuestionsEnum } from "@src/utils/enums/typesOfQuestions.enum";
-// import { TypesOfQuestionsEnum } from "@src/utils/enums/typesOfQuestions.enum";
+import TranslateTyping from "@src/components/questionTypes/translateTyping/TranslateTyping";
+import Conversation from "@src/components/questionTypes/conversation/Conversation";
+import TranslateTile from "@src/components/questionTypes/translateTiles/TranslateTile";
+import ImageAccordingWord from "@src/components/questionTypes/imageAccordingWord/ImageAccordingWord";
+import PairWordsTile from "@src/components/questionTypes/pairWordsTiles/PairWordsTiles";
+import { validateQuestionForm } from "../validators/questionValidator";
+import styles from "./questionFormDialog.module.scss";
 
 interface QuestionDialogProps {
   visible: boolean;
@@ -13,6 +19,23 @@ interface QuestionDialogProps {
   onSubmit: (question?: Partial<Question>) => void;
   question?: Question;
 }
+
+const typeOfQuestions = [
+  {
+    name: "Translate with tiles",
+    value: TypesOfQuestionsEnum.TranslateWithTiles,
+  },
+  { name: "Translate typing", value: TypesOfQuestionsEnum.TranslateTyping },
+  {
+    name: "Pair words with tiles",
+    value: TypesOfQuestionsEnum.PairWordsWithTiles,
+  },
+  {
+    name: "choose image according to word",
+    value: TypesOfQuestionsEnum.ChooseImageAccordingToWord,
+  },
+  { name: "conversation", value: TypesOfQuestionsEnum.Conversation },
+];
 
 const QuestionFormDialog: FC<QuestionDialogProps> = ({
   visible,
@@ -25,20 +48,6 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
   );
   const [errors, setErrors] = useState<any>({});
 
-  const typeOfQuestions = [
-    { name: "Translate with tiles", value: TypesOfQuestionsEnum.TRANS_TILES },
-    {
-      name: "Pair words with tiles",
-      value: TypesOfQuestionsEnum.PAIR_WORDS_TILES,
-    },
-    {
-      name: "choose image according to word",
-      value: TypesOfQuestionsEnum.CHOOSE_IMAGE_ACCOR_WORD,
-    },
-    { name: "conversation", value: TypesOfQuestionsEnum.CONVERSATION },
-    { name: "Translate typing", value: TypesOfQuestionsEnum.TRANS_TYPING },
-  ];
-
   const handleClose = () => {
     setQuestion(undefined);
     onClose();
@@ -47,15 +56,7 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
   const validateForm = (
     handleSubmit: (question?: Partial<Question>) => void
   ) => {
-    const newErrors: any = {};
-    if (
-      !question?.text ||
-      !question?.type ||
-      !question?.feedback ||
-      !question?.order
-    ) {
-      newErrors.name = "Field are required";
-    }
+    const newErrors = validateQuestionForm(question);
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -66,35 +67,42 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
     handleSubmit(question);
   };
 
-  useEffect(() => {
-    if (questionToEdit) {
-      setQuestion(questionToEdit);
-    }
-  }, [questionToEdit]);
-
-  const footerContent = (
-    <div>
-      <Button onClick={handleClose} className="p-button-text">
-        Cancel
-      </Button>
-      <Button isMain onClick={() => validateForm(onSubmit)} autoFocus>
-        Add
-      </Button>
-    </div>
-  );
-
-  const handleChange = (key: any, value: any) => {
+  const handleChange = (key: string, value: any) => {
     setQuestion({
       ...question,
+      metadata: key === "type" ? undefined : question?.metadata,
       [key]: value,
     });
   };
 
+  useEffect(() => {
+    if (visible && questionToEdit) {
+      setQuestion(questionToEdit);
+    }
+  }, [questionToEdit, visible]);
+
+  const footerContent = (
+    <div className={styles.containerButtonsAction}>
+      <Button
+        isMain
+        onClick={() => validateForm(onSubmit)}
+        autoFocus
+        size="sm"
+        className={styles.addButton}
+      >
+        Add
+      </Button>
+      <Button onClick={handleClose} className={styles.cancelButton} size="sm">
+        Cancel
+      </Button>
+    </div>
+  );
+
   return (
     <Dialog
-      header="Header"
+      header="Question"
       visible={visible}
-      style={{ width: "50vw" }}
+      style={{ width: "35vw" }}
       onHide={handleClose}
       footer={footerContent}
     >
@@ -104,6 +112,7 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
         value={question?.text}
         error={errors.text}
         onChange={handleChange}
+        className={styles.text}
       />
 
       <Dropdown
@@ -114,16 +123,46 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
         optionLabel="name"
         optionValue="value"
         placeholder="Select a type of ques"
-        className="w-full md:w-14rem"
+        className={`w-full md:w-14rem ${styles.type}`}
       />
 
-      {question?.type === TypesOfQuestionsEnum.TRANS_TILES && (
-        <DuoInput
-          placeholder="text"
-          name="text"
-          value={question?.metadata}
-          error={errors.text}
+      {question?.type === TypesOfQuestionsEnum.TranslateTyping && (
+        <TranslateTyping
+          questionMetadata={question?.metadata}
           onChange={handleChange}
+          errors={errors.metadata}
+        />
+      )}
+
+      {question?.type === TypesOfQuestionsEnum.Conversation && (
+        <Conversation
+          questionMetadata={question?.metadata}
+          onChange={handleChange}
+          errors={errors.metadata}
+        />
+      )}
+
+      {question?.type === TypesOfQuestionsEnum.TranslateWithTiles && (
+        <TranslateTile
+          questionMetadata={question?.metadata}
+          onChange={handleChange}
+          errors={errors.metadata}
+        />
+      )}
+
+      {question?.type === TypesOfQuestionsEnum.ChooseImageAccordingToWord && (
+        <ImageAccordingWord
+          questionMetadata={question?.metadata}
+          onChange={handleChange}
+          errors={errors.metadata}
+        />
+      )}
+
+      {question?.type === TypesOfQuestionsEnum.PairWordsWithTiles && (
+        <PairWordsTile
+          questionMetadata={question?.metadata}
+          onChange={handleChange}
+          errors={errors.metadata}
         />
       )}
 
@@ -133,6 +172,7 @@ const QuestionFormDialog: FC<QuestionDialogProps> = ({
         value={question?.feedback}
         error={errors.feedback}
         onChange={handleChange}
+        className={styles.feedback}
       />
 
       <DuoInput

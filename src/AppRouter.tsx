@@ -67,17 +67,17 @@ const AppRouter = () => {
           ></Route>
 
           <Route
-            path={`/languages/:languageId/sections/:sectionId/levels`}
+            path={`/sections/:sectionId/levels`}
             element={<LevelAdmin />}
           ></Route>
 
           <Route
-            path={`/languages/:languageId/sections/:sectionId/levels/:levelId/lessons`}
+            path={`/levels/:levelId/lessons`}
             element={<LessonAdmin />}
           ></Route>
 
           <Route
-            path={`/languages/:languageId/sections/:sectionId/levels/:levelId/lessons/:lessonId/questions`}
+            path={`/lessons/:lessonId/questions`}
             element={<QuestionAdmin />}
           ></Route>
 

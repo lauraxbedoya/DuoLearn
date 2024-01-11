@@ -8,6 +8,7 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styles from "./lesonAdmin.module.scss";
 
 export default function LessonAdmin() {
   const [visible, setVisible] = useState(false);
@@ -16,8 +17,6 @@ export default function LessonAdmin() {
   const { levelId } = useParams();
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const navigate = useNavigate();
-  const { languageId } = useParams();
-  const { sectionId } = useParams();
 
   const actionsTemplate = (lesson: Lesson) => {
     return (
@@ -59,7 +58,7 @@ export default function LessonAdmin() {
         text
         onClick={() => handleAdminLessons(lesson)}
       >
-        Administrar Lecciones
+        Manage questions
       </Button>
     );
   };
@@ -87,6 +86,7 @@ export default function LessonAdmin() {
       body: JSON.stringify({
         ...lesson,
         levelId,
+        isPractice: lesson.isPractice || false,
       }),
     });
     if (respStream.status === 200) {
@@ -135,13 +135,7 @@ export default function LessonAdmin() {
   };
 
   const handleAdminLessons = (lesson: Lesson) => {
-    navigate(
-      `/languages/${languageId}/sections/${sectionId}/levels/${levelId}/lessons/${lesson.id}/questions`
-    );
-  };
-
-  const handleBackLevel = () => {
-    navigate(`/languages/${languageId}/sections/${sectionId}/levels`);
+    navigate(`/lessons/${lesson.id}/questions`);
   };
 
   const handleSubmit = async (lesson?: Partial<Lesson>) => {
@@ -164,29 +158,41 @@ export default function LessonAdmin() {
   }, [levelId]);
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <LessonFormDialog
         visible={visible}
         onSubmit={handleSubmit}
         onClose={handleClose}
         lesson={lessonToEdit}
       />
+
       <ConfirmDialog />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Agregar"
-        onClick={openAddLessonForm}
-      />
-      <Button
-        icon="pi pi-plus"
-        severity="success"
-        raised
-        label=" Volver"
-        onClick={handleBackLevel}
-      />
-      <DataTable value={lessons} tableStyle={{ width: "100%" }}>
+
+      <div>
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Add"
+          onClick={openAddLessonForm}
+          className={styles.addOrBackButton}
+        />
+        <Button
+          icon="pi pi-plus"
+          severity="success"
+          raised
+          label="Back"
+          onClick={() => navigate(-1)}
+          className={styles.addOrBackButton}
+        />
+      </div>
+
+      <DataTable
+        value={lessons}
+        scrollable
+        scrollHeight="600px"
+        tableStyle={{ width: "100%" }}
+      >
         <Column field="experience" header="Experience"></Column>
         <Column
           field="practiceExperience"
